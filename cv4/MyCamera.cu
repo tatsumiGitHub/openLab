@@ -10,6 +10,17 @@ void gamma_wrapper(unsigned char *_frame_data, int _size, double _gamma) {
     return;
 }
 
+void gamma_wrapper_openMP(unsigned char *_frame_data, int _size, double _gamma) {
+    if (_frame_data == NULL) {
+        return;
+    }
+    #pragma omp parallel for
+    for (int i = 0; i < _size; i++) {
+        _frame_data[i] = 255 * pow(_frame_data[i] / 255.0, 1 / _gamma);
+    }
+    return;
+}
+
 __global__ void gamma_wrapper_cuda(unsigned char *_frame_data, int _size, double _gamma) {
     if (_frame_data == NULL) {
         return;
@@ -60,6 +71,7 @@ int run(int _width, int _height, int _fps) {
         case 0x1b:
         case 0x31:
         case 0x32:
+        case 0x33:
             status = key_input;
             break;
         }
@@ -70,6 +82,9 @@ int run(int _width, int _height, int _fps) {
             gamma_wrapper(h_frame.data, size, 2);
             break;
         case 0x32:
+            gamma_wrapper_openMP(h_frame.data, size, 2);
+            break;
+        case 0x33:
             cudaMemcpy(d_frame, h_frame.data, size, cudaMemcpyHostToDevice);
 		    gamma_wrapper_cuda<<< blocks, threads >>>(d_frame, size, 2);
             cudaMemcpy(h_frame.data, d_frame, size, cudaMemcpyDeviceToHost);
