@@ -17,7 +17,7 @@ $(PROGRAM):	$(OBJS)
 		$(NVCC) -O0 -c $< -I$(INCLUDE)
 
 test:		$(PROGRAM)
-		./main
+		./main 1
 
 gdb:		$(PROGRAM)
 		gdb main
