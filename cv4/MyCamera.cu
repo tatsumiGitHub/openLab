@@ -224,12 +224,11 @@ void pca_kernel_wrapper(unsigned char *_h_frame_data, int _size)
     mat.elements[6] = h_pca[4];
     mat.elements[7] = h_pca[5];
     mat.elements[8] = h_pca[2];
+    printf("r_ave: %.3f, g_ave: %.3f, b_ave: %.3f\n", h_ave[0], h_ave[1], h_ave[2]);
     printf("//======== mat ========//\n");
     m_show(&mat);
     m_eig(&mat);
     m_free(&mat);
-
-    printf("r_ave: %.3f, g_ave: %.3f, b_ave: %.3f\n", h_ave[0], h_ave[1], h_ave[2]);
 
     free(h_ave);
     cudaFree(d_frame_data);
