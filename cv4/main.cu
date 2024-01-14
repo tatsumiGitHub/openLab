@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("no argument: >$ ./main <test| 1 / 2>\n");
+        printf("no argument: >$ ./main [1 | 2]\n");
     }
     return 0;
 }
